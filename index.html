@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainforest</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="img/logo.png">
+    <script src="js/script.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="navbar justify-content-between navbar-custom">
+        <a class="navbar-brand"><img src="img/rainforestw.png" alt=""></a>
+        <div class="btn-group">
+            <div class="dropdown">
+                <button id="categoriesButton" class="btn btn-secondary dropdown-toggle" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Todas las categorías
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a id="allItems" class="dropdown-item" href="#">Todo</a></li>
+                    <div class="dropdown-divider"></div>
+                    <li><a id="cdItems" class="dropdown-item" href="#">Albúms</a></li>
+                    <li><a id="bookItems" class="dropdown-item" href="#">Libros</a></li>
+                </ul>
+            </div>
+        </div>
+        <input id="searchbar" class="form-control" type="search" placeholder="Buscar Rainforest.com.mx"
+            aria-label="Search">
+        <button id="searchbutton" class="btn btn-warning" type="submit"><img src="img/magnifying-glass-svgrepo-com.svg"
+                alt=""></button>
+
+
+        <div class="containerCart">
+            <div class="btn-group">
+                <button id="cart" class="btn btn-secondary" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    0
+                </button>
+                <div class="dropdown-menu dropdown-menu-end"> <!-- Use dropdown-menu-end to align to the end -->
+                    <div id="cartItems">
+
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                        <div class="d-flex justify-content-between">
+                            <span>Total</span>
+                            <span id="totalSpan">$0.00</span>
+                        </div>
+                    </a>
+                    <div id="checkoutArea">
+                        <a href="checkout.html">
+                            <button id="checkoutButton" class="btn btn-warning mt-2">Pagar</button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </nav>
+
+    <div class="container" id="catalogo-container">
+        <div class="row" id="catalogo">
+            <!-- Card containers will be dynamically generated here -->
+        </div>
+    </div>
+
+    <div id="foot"><footer>© 1996-2024, Rainforest.com, Inc. o sus afiliados</footer></div>
+</body>
+
+</html>
