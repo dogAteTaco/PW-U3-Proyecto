@@ -3,10 +3,13 @@
 }
 
 .navbar-brand img {
-    max-height: 32px;
-    margin-left: 20px;
+    max-width: 130px;
+    margin-left: 15px;
 }
 
+#searchArea{
+    width: calc(100% - 300px);
+}
 
 .btn-warning img {
     max-height: 20px;
@@ -95,7 +98,7 @@
 }
 
 
-.containerCart {
+#containerCart {
     display: flex;
     align-items: center; /* Vertically center items */
     justify-content: center; /* Horizontally center items */
@@ -105,6 +108,7 @@
 #cart {
     color: #e9810b;
     background: url('../img/icons8-shopping-cart-96.png');
+    background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
     height: 50px;
@@ -144,9 +148,12 @@
     padding-right: 25px;
 }
 
+#botonBorrar{
+    margin-bottom: 60px;
+}
 
 #foot{
-    height: 60px;
+    height: 40px;
     padding: 15px;
     background-color: #131921;
     text-align: center;
@@ -156,4 +163,95 @@
     left: 0;
     bottom: 0;
     width: 100%;
+    display: block;
+}
+
+
+#loginArea{
+    width: 250px;
+    padding: 20px;
+}
+
+.form-group{
+    padding: 2px;
+}
+
+#userArea{
+    width: 50px;
+    margin: 5px;
+
+}
+
+#userDropdown{
+    width: 50px;
+}
+#userButton{
+    border-radius: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    color: white;
+    border-width: 0px; /*Removes outline from button*/
+}
+
+.btn, .btn-secondary,.btn-group,#cart{
+    margin: 0px;
+    padding: 0px;
+}
+
+.cartDeleteButton{
+    border: 0px; 
+    background-color: transparent;
+}
+
+.cartDeleteButton img{
+    width: 30px; 
+    height:30px
+}
+
+.cartItem{
+    width: 280px; display: flex; align-items: center;
+}
+
+@media (max-width: 500px) {
+    #searchArea,
+    #containerCart {
+        display: flex;
+        flex-wrap: nowrap;
+        width: 100%;
+        margin-top: 10px; /* Adjust as needed */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .navbar-brand,
+    #searchArea,
+    c {
+        display: block;
+    }
+
+    .navbar-brand {
+        margin-bottom: 10px; /* Adjust as needed */
+    }
+
+    #categoriesButton,.dropdown,.btn-group{
+        border-top-right-radius: 5px;
+        width: 100%;
+        border-bottom-right-radius: 5px;
+    }
+    
+    #searchbar{
+        border-radius: 5px;
+        margin-right: 5px;
+        margin-top: 5px;
+    }
+    
+    #searchbutton{
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    
+
 }

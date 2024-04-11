@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
 	cargarCarrito();
-    localStorage.clear();
 });
 
+logged = localStorage.getItem("logged");
+    if (!logged)
+        window.location.href = "../index.html";
 
 function cargarCarrito() {
     let subTotal = 0;
@@ -16,17 +18,17 @@ function cargarCarrito() {
     items.forEach((item) => {
         const fila = document.createElement("tr");
         fila.innerHTML = `
-            <td><img class="cartImg" src="img/products/${item.image}"></td>
+            <td><img class="cartImg" src="../img/products/${item.image}"></td>
             <td>${item.id}</td>
             <td>${item.quantity}</td>
-            <td>$${item.price}.00</td>
-            <td>$${item.price*item.quantity}.00</td>
+            <td>$${item.price}</td>
+            <td>$${item.price*item.quantity}</td>
         `;
         tablaCarrito.appendChild(fila);
-        subTotal = subTotal + Number.parseInt(item.price) * Number.parseInt(item.quantity);
+        subTotal = subTotal + Number.parseFloat(item.price) * Number.parseFloat(item.quantity);
     });
-
+    localStorage.removeItem("cart");
     const subtotalTag = document.getElementById("subTotal");
-    subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + items.length + " productos): <b>$" + subTotal + ".00 USD</b></span>";
+    subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + items.length + " productos): <b>$" + subTotal + " USD</b></span>";
     
 }
