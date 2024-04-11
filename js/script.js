@@ -1,5 +1,5 @@
 // script.js
-const catalogoCompleto = [
+const completeCatalog = [
     { id: "Small Talk", autor: "Soda Blonde", imagen: "sodablonde1.jpg", precio: 10, tipo: "CD" },
     { id: "Dream Big", autor: "Soda Blonde", imagen: "sodablonde2.jpg", precio: 15, tipo: "CD" },
     { id: "Jeff Buckley", autor: "Jeff Buckley", imagen: "jeffbuckley.jpg", precio: 20, tipo: "CD" },
@@ -20,6 +20,7 @@ let total = 0;
 var tipoFiltro = "all";
 let userLogged;
 let users = [];
+
 class User {
     constructor(id, password, type) {
         this.id = id;
@@ -45,7 +46,7 @@ logged = localStorage.getItem("logged");
 document.addEventListener("DOMContentLoaded", function () {
 
     
-    cargarProductos(catalogoCompleto);
+    loadProducts(completeCatalog);
     const searchButton = document.getElementById("searchbutton");
     const searchBar = document.getElementById("searchbar");
     const allItems = document.getElementById("allItems");
@@ -113,31 +114,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function cargarProductos(catalogo) {
-    const catalogoContainer = document.getElementById("catalogo");
-    catalogoContainer.innerHTML = "";
+function loadProducts(catalog) {
+    const catalogContainer = document.getElementById("catalogo");
+    catalogContainer.innerHTML = "";
     // Genera las tarjetas de productos en el catálogo
-    catalogo.forEach((producto) => {
+    catalog.forEach((product) => {
         const card = document.createElement("div");
         //card.classList.add("col-md-4", "mb-4");
         card.innerHTML = `
             <div class="card-container">
                 <div class="card">
-                    <div><img src="../img/products/${producto.imagen}" class="card-img-top" alt="${producto.id}"></div>
+                    <div><img src="../img/products/${product.imagen}" class="card-img-top" alt="${product.id}"></div>
                     <div class="card-body">
-                        <h5 class="card-title">${producto.id}</h5>
-                        <p class="card-author">${producto.autor}</p>
+                        <h5 class="card-title">${product.id}</h5>
+                        <p class="card-author">${product.autor}</p>
                         <div class="card-price">
-                            <span class="main-price">$${parseInt(producto.precio)}</span>
-                            <span class="cents">${(producto.precio % 1).toFixed(2).substr(2)}</span>
+                            <span class="main-price">$${parseInt(product.precio)}</span>
+                            <span class="cents">${(product.precio % 1).toFixed(2).substr(2)}</span>
                         </div>
                         <input type="number" min="0" class="form-control" data-id="cantidadProducto" value="1">
-                        <button class="cantidadField btn btn-primary mt-2" data-id="${producto.id}">Añadir a Carrito</button>
+                        <button class="cantidadField btn btn-primary mt-2" data-id="${product.id}">Añadir a Carrito</button>
                     </div>
                 </div>
             </div>
             `;
-        catalogoContainer.appendChild(card);
+        catalogContainer.appendChild(card);
 
     });
     const buttons = document.querySelectorAll('.cantidadField');
@@ -155,14 +156,14 @@ function cargarProductos(catalogo) {
             // Get the sibling <h5> element
             const h5Element = cardContainer.querySelector('.card-title');
             const h5Value = h5Element.textContent; // Retrieve the text content
-            let currentItem = catalogoCompleto.find((p) => p.id===buttonValue);
+            let currentItem = completeCatalog.find((p) => p.id===buttonValue);
             if (!cartItems.some(e => e.id === h5Value)) {
                 cartItems.push(new CartItem(buttonValue, inputValue,currentItem.precio,currentItem.imagen));
                 added = added + 1;
             }
             else
             {
-                const product = cartItems.find(producto => producto.id === buttonValue);
+                const product = cartItems.find(p => p.id === buttonValue);
                 product.quantity = Number.parseInt(product.quantity)+Number.parseInt(inputValue);
             }
             refreshCart();
@@ -184,9 +185,9 @@ function refreshCart(){
     let itemDiv = document.createElement("div");
     // Recalculates the total of the cart
     cartItems.forEach((item)=>{
-        const product = catalogoCompleto.find(producto => producto.id === item.id);
+        const product = completeCatalog.find(producto => producto.id === item.id);
         const precio = Number.parseFloat(product.precio);
-        currentItem = catalogoCompleto.find((p) => p.id===item.id);
+        currentItem = completeCatalog.find((p) => p.id===item.id);
         total = Number.parseFloat(total) + Number.parseFloat(item.quantity)*precio;
         itemDiv = document.createElement("div");
         
@@ -232,14 +233,14 @@ function refreshCart(){
 // Filtra los productos basados en tipo, autor o id
 function filtrar(filter) {
     const lowerCaseFilter = filter.toLowerCase(); 
-    const filteredItems = catalogoCompleto.filter(item => {
+    const filteredItems = completeCatalog.filter(item => {
         const lowerCaseId = item.id.toLowerCase(); 
         const lowerCaseAutor = item.autor.toLowerCase(); 
         const lowerCaseTipo = item.tipo.toLowerCase(); 
         return (filter==="" || lowerCaseId.includes(lowerCaseFilter) || lowerCaseAutor.includes(lowerCaseFilter)) && (tipoFiltro === "all" || lowerCaseTipo === tipoFiltro.toLowerCase());
     });
 
-    cargarProductos(filteredItems);
+    loadProducts(filteredItems);
 }
 
 // Verifies the user is Admin

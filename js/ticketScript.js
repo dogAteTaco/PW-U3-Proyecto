@@ -1,18 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
-	cargarCarrito();
+	loadCart();
 });
 
 logged = localStorage.getItem("logged");
     if (!logged)
         window.location.href = "../index.html";
 
-function cargarCarrito() {
+function loadCart() {
     let subTotal = 0;
-    const tablaCarrito = document.getElementById("tablaCarrito");
+    const cartTable = document.getElementById("tablaCarrito");
     // Obtener los envíos almacenados en el almacenamiento local
     const items = JSON.parse(localStorage.getItem("cart")) || [];
     //Elimina las filas de la tabla
-    tablaCarrito.innerHTML = "";
+    cartTable.innerHTML = "";
 
         // Recorrer los envíos y agregar filas a la tabla
     items.forEach((item) => {
@@ -24,7 +24,7 @@ function cargarCarrito() {
             <td>$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td>$${(item.price*item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         `;
-        tablaCarrito.appendChild(fila);
+        cartTable.appendChild(fila);
         subTotal = subTotal + Number.parseFloat(item.price) * Number.parseFloat(item.quantity);
     });
     localStorage.removeItem("cart");

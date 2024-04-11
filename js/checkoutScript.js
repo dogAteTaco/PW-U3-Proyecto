@@ -6,13 +6,14 @@ if (!logged)
     window.location.href = "../index.html";
 
 document.addEventListener("DOMContentLoaded", function () {
-
+    const payButton = document.getElementById("botonPagar");
+    const emptyButton = document.getElementById("botonBorrar");
     localStorage.setItem("filter", "");
     localStorage.setItem("tipo", "");
     reloadCart();
 
 
-    botonBorrar.addEventListener("click", function (event) {
+    emptyButton.addEventListener("click", function (event) {
         event.preventDefault();
         //Limpia el local storage
 
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         reloadCart();
     });
 
-    botonPagar.addEventListener("click", function (event) {
+    payButton.addEventListener("click", function (event) {
         event.preventDefault();
         window.location.href = 'ticket.html';
     });
@@ -51,20 +52,15 @@ function reloadCart() {
             <td><button class="cartDeleteButton"><img style="" src="../img/red-x-icon.png"></button></td>
         `;
 
-
             var deleteButton = row.querySelector('.cartDeleteButton');
 
-            // Add event listener to the delete button
             deleteButton.addEventListener('click', function () {
-                // Get the parent tr of the delete button, which is the table row
                 var cartItemRow = deleteButton.closest('tr');
-                // Get the td containing the item id
                 var idTd = cartItemRow.querySelector('td:nth-child(2)');
 
-                // Removes the item based on its ID
                 removeById(idTd.innerText);
                 console.log(idTd.innerText);
-                // Remove the cart item row from the table
+
                 cartItemRow.remove();
 
                 refreshTotal();
