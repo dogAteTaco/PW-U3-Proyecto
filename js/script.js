@@ -62,7 +62,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const userButton = document.getElementById("userButton");
     userLogged = localStorage.getItem("user");
     if(userLogged)
-        userButton.innerHTML = "<span style=\"font-size: small;\">Hola "+userLogged+"</span>";
+        {
+            userButton.innerHTML = "<span style=\"font-size: small;\">Hola <strong style=\"font-weight: bold;\">"+userLogged+"</strong></span>";
+        }
     addUserOptions(userLogged);
     //Loads the saved cart
     const cartData = JSON.parse(localStorage.getItem("cart"));
@@ -124,11 +126,13 @@ function cargarProductos(catalogo) {
                     <div><img src="../img/products/${producto.imagen}" class="card-img-top" alt="${producto.id}"></div>
                     <div class="card-body">
                         <h5 class="card-title">${producto.id}</h5>
-                        <p class="card-author">de ${producto.autor}</p>
-                        <p class="card-text">$${producto.precio}</p>
+                        <p class="card-author">${producto.autor}</p>
+                        <div class="card-price">
+                            <span class="main-price">$${parseInt(producto.precio)}</span>
+                            <span class="cents">${(producto.precio % 1).toFixed(2).substr(2)}</span>
+                        </div>
                         <input type="number" min="0" class="form-control" data-id="cantidadProducto" value="1">
                         <button class="cantidadField btn btn-primary mt-2" data-id="${producto.id}">Añadir a Carrito</button>
-                    </div>
                     </div>
                 </div>
             </div>

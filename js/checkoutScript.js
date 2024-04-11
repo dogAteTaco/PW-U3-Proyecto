@@ -93,7 +93,10 @@ function refreshTotal() {
 
         });
         const subtotalTag = document.getElementById("subTotal");
-        subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + cartItems.length + " productos): <b>$" + subTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD</b></span>";
+        let prodLabel = "producto";
+        if(cartItems.length>1)
+            prodLabel = "productos";
+        subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + cartItems.length + " "+prodLabel+"): <b>$" + subTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD</b></span>";
     }
 
 }

@@ -21,14 +21,17 @@ function cargarCarrito() {
             <td><img class="cartImg" src="../img/products/${item.image}"></td>
             <td>${item.id}</td>
             <td>${item.quantity}</td>
-            <td>$${item.price}</td>
-            <td>$${item.price*item.quantity}</td>
+            <td>$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>$${(item.price*item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
         `;
         tablaCarrito.appendChild(fila);
         subTotal = subTotal + Number.parseFloat(item.price) * Number.parseFloat(item.quantity);
     });
     localStorage.removeItem("cart");
+    let prodLabel = "producto";
+        if(items.length>1)
+            prodLabel = "productos";
     const subtotalTag = document.getElementById("subTotal");
-    subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + items.length + " productos): <b>$" + subTotal + " USD</b></span>";
+    subtotalTag.innerHTML = "<span style=\"font-size: x-large;\"> Total (" + items.length + " "+prodLabel+"): <b>$" + subTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD</b></span>";
     
 }
