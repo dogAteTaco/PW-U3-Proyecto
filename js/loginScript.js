@@ -26,26 +26,34 @@ document.addEventListener("DOMContentLoaded", function () {
     else {
         //Loads the users if there wasn't one logged in
         const usersData = JSON.parse(localStorage.getItem("users"));
+        // console.log(localStorage.getItem("users"));
         if (usersData) {
             users = usersData.map(item => new User(item.id, item.password, item.type));
         }
+        console.log(users);
         // Adds the admin user if it doesn't exist
         addUser(adminuser, adminpass, 'A');
 
         // Adds the code to verify the login in the Login Button
         loginButton.addEventListener("click", function (event) {
             event.preventDefault();
-
+            console.log(users);
             //Check for admin user
             if (verifyLogin(userInput.value, passwordInput.value)) {
                 window.location.href = "html/landing.html";
                 logged = true;
+                console.log(users);
                 localStorage.setItem("logged", "true");
                 localStorage.setItem("user", userInput.value);
             }
             else
             {
                 localStorage.setItem("logged", "false");
+                localStorage.removeItem("user");
+                logged = false;
+                const errorArea = document.getElementById("errorArea");
+                errorArea.setAttribute("style","display:grid");
+                errorArea.innerText = "Usuario o contraseña incorrectos.";
             }
         });
     }

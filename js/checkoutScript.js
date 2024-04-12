@@ -1,5 +1,5 @@
 let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-var tipoFiltro = "all";
+var typeFilter = "all";
 
 logged = localStorage.getItem("logged");
 if (!logged)
@@ -41,14 +41,19 @@ function reloadCart() {
     }
     else {
         // Recorrer los envíos y agregar filas a la tabla
-        cartItems.forEach((item) => {
+        cartItems.forEach((currentItem) => {
             const row = document.createElement("tr");
+
+            let imageURL = currentItem.image;
+            if(!currentItem.image.toLowerCase().startsWith("http"))
+			    imageURL = "../img/products/"+currentItem.image;
+
             row.innerHTML = `
-            <td><img class="cartImg" src="../img/products/${item.image}"></td>
-            <td>${item.id}</td>
-            <td>${item.quantity}</td>
-            <td>$${item.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            <td>$${(item.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td><img class="cartImg" src="${imageURL}"></td>
+            <td>${currentItem.name}</td>
+            <td>${currentItem.quantity}</td>
+            <td>$${currentItem.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>$${(currentItem.price * currentItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td><button class="cartDeleteButton"><img style="" src="../img/red-x-icon.png"></button></td>
         `;
 

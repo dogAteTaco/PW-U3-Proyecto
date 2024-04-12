@@ -1,0 +1,50 @@
+/* Users page related */
+#userCards{
+    width: 100%;
+}
+
+#usersArea .card{
+    padding: 10px;
+}
+#userCards .card,.card-body,.userInput,.passwordInput{
+    min-width: 70%;
+    max-width: 400px;
+    margin: 4px;
+}
+#userCatalogButtons {
+    display: inline-block;
+    text-align: right;
+}
+
+#userCatalogButtons img{
+    height: 30px;
+    margin: 5px;
+}
+
+#addUserArea{
+    text-align: right;
+}
+
+.listedUser{
+    width: 100%;
+    border: 0px;
+    background: transparent;
+    border-radius: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+.listedUser:hover{
+    background-color: grey;
+}
+
+#typeMenu{
+    width: 50px;
+}
+
+#usersArea .dropdown,.btn{
+    width: 100px;
+}
+
+#typeButton, #usersArea .dropdown,.dropdown-menu,.dropdown-item {
+    width: 170px;
+}

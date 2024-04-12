@@ -1,0 +1,12 @@
+/* Login Page specific */
+#loginArea{
+    max-width: 350px;
+}
+
+#loginArea *{
+    margin: 10px;
+}
+
+#loginButton{
+    width: 150px;
+}

@@ -21,8 +21,19 @@
 	padding: 10px;
 }
 
-#subtotalArea{
-	margin-top: 100px;
+#checkoutArea{
+    padding-left: 200px;
+    color: white;
+}
+
+#checkoutButton{
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+#botonBorrar{
+    margin-bottom: 60px;
+	width: 200px;
 }
 
 #buttons{

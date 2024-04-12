@@ -1,41 +1,40 @@
 // script.js
-const completeCatalog = [
-    { id: "Small Talk", autor: "Soda Blonde", imagen: "sodablonde1.jpg", precio: 10, tipo: "CD" },
-    { id: "Dream Big", autor: "Soda Blonde", imagen: "sodablonde2.jpg", precio: 15, tipo: "CD" },
-    { id: "Jeff Buckley", autor: "Jeff Buckley", imagen: "jeffbuckley.jpg", precio: 20, tipo: "CD" },
-    { id: "Primal Heart", autor: "Kimbra", imagen: "primarheart.jpg", precio: 12, tipo: "CD" },
-    { id: "House of Leaves", autor: "Mark Z. Danielewski", imagen: "houseofleaves.jpg", precio: 31.25, tipo: "Book" },
-    { id: "L'enfant Sauvage", autor: "Gojira", imagen: "lenfantsauvage.jpg", precio: 14, tipo: "CD" },
-    { id: "The Way of All Flesh", autor: "Gojira", imagen: "wayofallflesh.jpg", precio: 18, tipo: "CD" },
-    { id: "Magma", autor: "Gojira", imagen: "magma.jpg", precio: 15, tipo: "CD" },
-    { id: "Fortitude", autor: "Gojira", imagen: "fortitude.jpg", precio: 13, tipo: "CD" },
-    { id: "The Long Dark Blue", autor: "Swain", imagen: "longdarkblue.jpg", precio: 18, tipo: "CD" },
-    { id: "Farenheit 451", autor: "Ray Bradbury", imagen: "farenheit.jpg", precio: 12, tipo: "Book" },
-    { id: "30", autor: "Adele", imagen: "30.jpg", precio: 19, tipo: "CD" },
-    { id: "Metro 2033", autor: "Dmitry Glukhovsky", imagen: "metro2033.jpg", precio: 13, tipo: "Book" },
-];
+let completeCatalog;
 
 let added = 0;
 let total = 0;
-var tipoFiltro = "all";
+var typeFilter = "all";
 let userLogged;
 let users = [];
 
 class User {
-    constructor(id, password, type) {
-        this.id = id;
+    constructor(name, password, type) {
+        this.name = name;
         this.password = password;
         this.type = type;
     }
 }
+
 class CartItem {
-    constructor(id, quantity, price, image) {
-        this.id = id;
+    constructor(name, quantity, price, image) {
+        this.name = name;
         this.quantity = quantity;
         this.price = price;
         this.image = image;
     }
 }
+
+class Product {
+    constructor(id, name, price, image, type)
+    {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.type = type;
+    }
+}
+
 let cartItems = [];
 
 logged = localStorage.getItem("logged");
@@ -45,6 +44,31 @@ logged = localStorage.getItem("logged");
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    const catalogJSON = localStorage.getItem("catalog");
+
+    if(catalogJSON)
+        completeCatalog = JSON.parse(catalogJSON);
+    if(!completeCatalog)
+    {
+        completeCatalog = [
+            { "id": "1", "name": "Small Talk", "autor": "Soda Blonde", "image": "https://f4.bcbits.com/img/a1547517492_10.jpg", "price": 10, "type": "CD" },
+            { "id": "2", "name": "Dream Big", "autor": "Soda Blonde", "image": "https://f4.bcbits.com/img/a3462523954_10.jpg", "price": 15, "type": "CD" },
+            { "id": "3", "name": "Jeff Buckley", "autor": "Jeff Buckley", "image": "jeffbuckley.jpg", "price": 20, "type": "CD" },
+            { "id": "4", "name": "Primal Heart", "autor": "Kimbra", "image": "primarheart.jpg", "price": 12, "type": "CD" },
+            { "id": "5", "name": "House of Leaves", "autor": "Mark Z. Danielewski", "image": "houseofleaves.jpg", "price": 31.25, "type": "Book" },
+            { "id": "6", "name": "L'enfant Sauvage", "autor": "Gojira", "image": "lenfantsauvage.jpg", "price": 14, "type": "CD" },
+            { "id": "7", "name": "sungazer vol. 2", "autor": "sungazer", "image": "https://f4.bcbits.com/img/a2615531513_10.jpg", "price": 13, "type": "CD" },
+            { "id": "8", "name": "The Way of All Flesh", "autor": "Gojira", "image": "wayofallflesh.jpg", "price": 18, "type": "CD" },
+            { "id": "9", "name": "Magma", "autor": "Gojira", "image": "magma.jpg", "price": 15, "type": "CD" },
+            { "id": "10", "name": "Fortitude", "autor": "Gojira", "image": "fortitude.jpg", "price": 13, "type": "CD" },
+            { "id": "11", "name": "The Long Dark Blue", "autor": "Swain", "image": "https://f4.bcbits.com/img/a0730532010_10.jpg", "price": 18, "type": "CD" },
+            { "id": "12", "name": "Farenheit 451", "autor": "Ray Bradbury", "image": "farenheit.jpg", "price": 12, "type": "Book" },
+            { "id": "13", "name": "30", "autor": "Adele", "image": "30.jpg", "price": 19, "type": "CD" },
+            { "id": "14", "name": "Metro 2033", "autor": "Dmitry Glukhovsky", "image": "metro2033.jpg", "price": 13, "type": "Book" }
+        ];
+        const catalogJSON = JSON.stringify(completeCatalog);
+        localStorage.setItem("catalog", catalogJSON);
+    }
     
     loadProducts(completeCatalog);
     const searchButton = document.getElementById("searchbutton");
@@ -73,40 +97,41 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log(cartData);
     if(cartData)
     {
-        cartItems = cartData.map(item => new CartItem(item.id, item.quantity, item.price,item.image));
+        cartItems = cartData.map(item => new CartItem(item.name, item.quantity, item.price,item.image));
         refreshCart();
     }
         
     allItems.addEventListener("click",function(){
-        tipoFiltro = "all";
-        filtrar(searchBar.value);
+        typeFilter = "all";
+        filterProducts(searchBar.value);
         catButton.textContent = "Todas las categorías";
     });
 
     logoutButton.addEventListener("click",function(){
-        localStorage.clear();
+        localStorage.removeItem("logged");
+        localStorage.removeItem("user");
         window.location.href = "../index.html";
     });
 
     cdItems.addEventListener("click",function(){
-        tipoFiltro = "cd";
-        filtrar(searchBar.value);
+        typeFilter = "cd";
+        filterProducts(searchBar.value);
         catButton.textContent = "Albúms";
     });
 
     bookItems.addEventListener("click",function(){
-        tipoFiltro = "book";
-        filtrar(searchBar.value);
+        typeFilter = "book";
+        filterProducts(searchBar.value);
         catButton.textContent = "Libros";
     });
 
     searchButton.addEventListener("click", function () {
-        filtrar(searchBar.value);
+        filterProducts(searchBar.value);
     });
     
     searchBar.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
-            filtrar(searchBar.value);
+            filterProducts(searchBar.value);
         }
     });
     
@@ -121,19 +146,22 @@ function loadProducts(catalog) {
     catalog.forEach((product) => {
         const card = document.createElement("div");
         //card.classList.add("col-md-4", "mb-4");
+        let imageURL = product.image;
+        if(!product.image.toLowerCase().startsWith("http"))
+			imageURL = "../img/products/"+product.image;	
         card.innerHTML = `
             <div class="card-container">
                 <div class="card">
-                    <div><img src="../img/products/${product.imagen}" class="card-img-top" alt="${product.id}"></div>
+                    <div><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
                     <div class="card-body">
-                        <h5 class="card-title">${product.id}</h5>
+                        <h5 class="card-title">${product.name}</h5>
                         <p class="card-author">${product.autor}</p>
                         <div class="card-price">
-                            <span class="main-price">$${parseInt(product.precio)}</span>
-                            <span class="cents">${(product.precio % 1).toFixed(2).substr(2)}</span>
+                            <span class="main-price">$${parseInt(product.price)}</span>
+                            <span class="cents">${(product.price % 1).toFixed(2).substr(2)}</span>
                         </div>
                         <input type="number" min="0" class="form-control" data-id="cantidadProducto" value="1">
-                        <button class="cantidadField btn btn-primary mt-2" data-id="${product.id}">Añadir a Carrito</button>
+                        <button class="cantidadField btn btn-primary mt-2" data-id="${product.name}">Añadir</button>
                     </div>
                 </div>
             </div>
@@ -156,14 +184,14 @@ function loadProducts(catalog) {
             // Get the sibling <h5> element
             const h5Element = cardContainer.querySelector('.card-title');
             const h5Value = h5Element.textContent; // Retrieve the text content
-            let currentItem = completeCatalog.find((p) => p.id===buttonValue);
-            if (!cartItems.some(e => e.id === h5Value)) {
-                cartItems.push(new CartItem(buttonValue, inputValue,currentItem.precio,currentItem.imagen));
+            let currentItem = completeCatalog.find((p) => p.name===buttonValue);
+            if (!cartItems.some(e => e.name === h5Value)) {
+                cartItems.push(new CartItem(buttonValue, inputValue,currentItem.price,currentItem.image));
                 added = added + 1;
             }
             else
             {
-                const product = cartItems.find(p => p.id === buttonValue);
+                const product = cartItems.find(p => p.name === buttonValue);
                 product.quantity = Number.parseInt(product.quantity)+Number.parseInt(inputValue);
             }
             refreshCart();
@@ -185,17 +213,21 @@ function refreshCart(){
     let itemDiv = document.createElement("div");
     // Recalculates the total of the cart
     cartItems.forEach((item)=>{
-        const product = completeCatalog.find(producto => producto.id === item.id);
-        const precio = Number.parseFloat(product.precio);
-        currentItem = completeCatalog.find((p) => p.id===item.id);
-        total = Number.parseFloat(total) + Number.parseFloat(item.quantity)*precio;
+        const product = completeCatalog.find(producto => producto.name === item.name);
+        const price = Number.parseFloat(product.price);
+        currentItem = completeCatalog.find((p) => p.name===item.name);
+        total = Number.parseFloat(total) + Number.parseFloat(item.quantity)*price;
         itemDiv = document.createElement("div");
         
+        let imageURL = currentItem.image;
+        if(!product.image.toLowerCase().startsWith("http"))
+			imageURL = "../img/products/"+product.image;	
+
         itemDiv.innerHTML = `
         <div class="cartItem" style="">
-            <div style="display: inline; margin-right:10px;"><img src="../img/products/${currentItem.imagen}"></div>
-            <span style="flex-grow: 1; padding-right: 15px;">${currentItem.id}</span>
-            <span style="text-align: right;">$${currentItem.precio.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} x${item.quantity}</span>
+            <div style="display: inline; margin-right:10px;"><img src="${imageURL}"></div>
+            <span style="flex-grow: 1; padding-right: 15px;">${currentItem.name}</span>
+            <span style="text-align: right;">$${currentItem.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} x${item.quantity}</span>
             <span><button class="cartDeleteButton" style=""><img style="width: 30px; height:30px" src="../img/red-x-icon.png"></button></span>
         </div>
         `;
@@ -208,10 +240,10 @@ function refreshCart(){
             // Get the parent div of the delete button, which is the cartItem div
             var cartItemDiv = deleteButton.closest('.cartItem');
             // Get the span containing the currentItem.id
-            var idSpan = cartItemDiv.querySelector('span:nth-child(2)'); 
+            var nameSpan = cartItemDiv.querySelector('span:nth-child(2)'); 
             
             // Removes it based on the ID of the row
-            removeById(idSpan.textContent);
+            removeById(nameSpan.textContent);
             // Remove the cartItem div
             cartItemDiv.remove();
             refreshCart();
@@ -230,14 +262,14 @@ function refreshCart(){
     cartTotal.textContent = "$"+ total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     cartTag.textContent = added;
 }
-// Filtra los productos basados en tipo, autor o id
-function filtrar(filter) {
+// Filtra los productos basados en tipo, autor o nombre
+function filterProducts(filter) {
     const lowerCaseFilter = filter.toLowerCase(); 
     const filteredItems = completeCatalog.filter(item => {
-        const lowerCaseId = item.id.toLowerCase(); 
+        const lowerCaseId = item.name.toLowerCase(); 
         const lowerCaseAutor = item.autor.toLowerCase(); 
-        const lowerCaseTipo = item.tipo.toLowerCase(); 
-        return (filter==="" || lowerCaseId.includes(lowerCaseFilter) || lowerCaseAutor.includes(lowerCaseFilter)) && (tipoFiltro === "all" || lowerCaseTipo === tipoFiltro.toLowerCase());
+        const lowerCaseTipo = item.type.toLowerCase(); 
+        return (filter==="" || lowerCaseId.includes(lowerCaseFilter) || lowerCaseAutor.includes(lowerCaseFilter)) && (typeFilter === "all" || lowerCaseTipo === typeFilter.toLowerCase());
     });
 
     loadProducts(filteredItems);
@@ -245,14 +277,14 @@ function filtrar(filter) {
 
 // Verifies the user is Admin
 function isAdmin(userId) {
-    return users.some(user => user.id === userId && user.type == "A");
+    return users.some(user => user.name === userId && user.type == "A");
 }
 
 function addUserOptions(userId){
     const userOptionsDiv = document.getElementById("userOptions");
     if(isAdmin(userId))
     {
-        userOptionsDiv.innerHTML = "<a class=\"dropdown-item\" href=\"#\"><span>Catálogo</span></a>"+
+        userOptionsDiv.innerHTML = "<a class=\"dropdown-item\" href=\"catalog.html\"><span>Catálogo</span></a>"+
         "<a class=\"dropdown-item\" href=\"user.html\"><span>Usuarios</span></a>";
     }
     
@@ -273,20 +305,20 @@ function addCartItem(currentItem) {
     imgDiv.style.display = 'inline';
     imgDiv.style.marginRight = '10px';
     var img = document.createElement('img');
-    img.src = '../img/products/' + currentItem.imagen;
+    img.src = '../img/products/' + currentItem.image;
     imgDiv.appendChild(img);
     cartItemDiv.appendChild(imgDiv);
 
     // Create the span elements
-    var idSpan = document.createElement('span');
-    idSpan.style.flexGrow = '1';
-    idSpan.style.paddingRight = '15px';
-    idSpan.textContent = currentItem.id;
-    cartItemDiv.appendChild(idSpan);
+    var nameSpan = document.createElement('span');
+    nameSpan.style.flexGrow = '1';
+    nameSpan.style.paddingRight = '15px';
+    nameSpan.textContent = currentItem.name;
+    cartItemDiv.appendChild(nameSpan);
 
     var priceSpan = document.createElement('span');
     priceSpan.style.textAlign = 'right';
-    priceSpan.textContent = '$' + currentItem.precio + 'x' + item.quantity;
+    priceSpan.textContent = '$' + currentItem.price + 'x' + item.quantity;
     cartItemDiv.appendChild(priceSpan);
 
     // Create the delete button
@@ -314,8 +346,8 @@ function addCartItem(currentItem) {
 }
 
 
-function removeById(id) {
-    const index = cartItems.findIndex(item => item.id === id);
+function removeById(name) {
+    const index = cartItems.findIndex(item => item.name === name);
     if (index !== -1) {
         cartItems.splice(index, 1);
         localStorage.setItem("cart",JSON.stringify(cartItems));

@@ -1,0 +1,39 @@
+#searchArea{
+	width: 100%;
+}
+
+#searchArea input, .productCatalogButtons,.card,.card-body{
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.productCatalogButtons{
+	text-align: right;
+	padding-right: 20px;
+}
+
+td img, .coverSection{
+	width: 100px;
+}
+
+td div{
+	margin-top: 10px;
+	width: 100%;
+}
+td span{
+	margin-right: 10px;
+}
+
+td input{
+	width: 100%;
+}
+
+#searchbar{
+	border-radius: 5px;
+	padding: 4px;
+}
+
+h2{
+	padding-top: 15px;
+}

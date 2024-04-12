@@ -1,10 +1,11 @@
 /* General */
 .navbar-custom {
     background-color: #131921;
+    min-height: 70px;
 }
 
 .navbar-brand img {
-    max-width: 130px;
+    width: 150px;
     margin-left: 15px;
 }
 
@@ -26,6 +27,8 @@ nav.navbar.justify-content-between.navbar-custom{
     margin: 0px;
     padding: 0px;
 }
+
+
 /* Item cards related */
 #catalogo {
     padding: 15px;
@@ -86,7 +89,6 @@ nav.navbar.justify-content-between.navbar-custom{
     flex: 1;
     margin-right: 10px;
 }
-
 
 .card-price {
     position: relative;
@@ -227,34 +229,21 @@ nav.navbar.justify-content-between.navbar-custom{
     width: 280px; display: flex; align-items: center;
 }
 
-
-
-/* Checkout Page related */
-#checkoutArea{
-    padding-left: 200px;
-    color: white;
-}
-
 #checkoutButton{
-    padding-left: 25px;
-    padding-right: 25px;
-}
-
-#botonBorrar{
-    margin-bottom: 60px;
+    float: right;
+    margin-right: 20px;
 }
 
 
 
-/* Login Page specific */
-#loginArea{
-    width: 250px;
-    padding: 20px;
+/* Add space to prevent total from not being displayed */
+#subtotalArea{
+	margin-top: 100px;
+    margin-bottom: 50px;
 }
 
-#loginArea *{
-    margin: 10px;
-}
+
+
 
 
 
