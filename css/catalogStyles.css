@@ -8,6 +8,9 @@
 	margin-bottom: 10px;
 }
 
+.priceField{
+	width: 200px;
+}
 .productCatalogButtons{
 	text-align: right;
 	padding-right: 20px;
@@ -37,3 +40,4 @@ td input{
 h2{
 	padding-top: 15px;
 }
+

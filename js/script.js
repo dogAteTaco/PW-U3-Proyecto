@@ -45,26 +45,26 @@ logged = localStorage.getItem("logged");
 document.addEventListener("DOMContentLoaded", function () {
 
     const catalogJSON = localStorage.getItem("catalog");
-
+    
     if(catalogJSON)
         completeCatalog = JSON.parse(catalogJSON);
     if(!completeCatalog)
     {
         completeCatalog = [
-            { "id": "1", "name": "Small Talk", "autor": "Soda Blonde", "image": "https://f4.bcbits.com/img/a1547517492_10.jpg", "price": 10, "type": "CD" },
-            { "id": "2", "name": "Dream Big", "autor": "Soda Blonde", "image": "https://f4.bcbits.com/img/a3462523954_10.jpg", "price": 15, "type": "CD" },
-            { "id": "3", "name": "Jeff Buckley", "autor": "Jeff Buckley", "image": "jeffbuckley.jpg", "price": 20, "type": "CD" },
-            { "id": "4", "name": "Primal Heart", "autor": "Kimbra", "image": "primarheart.jpg", "price": 12, "type": "CD" },
-            { "id": "5", "name": "House of Leaves", "autor": "Mark Z. Danielewski", "image": "houseofleaves.jpg", "price": 31.25, "type": "Book" },
-            { "id": "6", "name": "L'enfant Sauvage", "autor": "Gojira", "image": "lenfantsauvage.jpg", "price": 14, "type": "CD" },
-            { "id": "7", "name": "sungazer vol. 2", "autor": "sungazer", "image": "https://f4.bcbits.com/img/a2615531513_10.jpg", "price": 13, "type": "CD" },
-            { "id": "8", "name": "The Way of All Flesh", "autor": "Gojira", "image": "wayofallflesh.jpg", "price": 18, "type": "CD" },
-            { "id": "9", "name": "Magma", "autor": "Gojira", "image": "magma.jpg", "price": 15, "type": "CD" },
-            { "id": "10", "name": "Fortitude", "autor": "Gojira", "image": "fortitude.jpg", "price": 13, "type": "CD" },
-            { "id": "11", "name": "The Long Dark Blue", "autor": "Swain", "image": "https://f4.bcbits.com/img/a0730532010_10.jpg", "price": 18, "type": "CD" },
-            { "id": "12", "name": "Farenheit 451", "autor": "Ray Bradbury", "image": "farenheit.jpg", "price": 12, "type": "Book" },
-            { "id": "13", "name": "30", "autor": "Adele", "image": "30.jpg", "price": 19, "type": "CD" },
-            { "id": "14", "name": "Metro 2033", "autor": "Dmitry Glukhovsky", "image": "metro2033.jpg", "price": 13, "type": "Book" }
+            { "id": "1", "name": "Small Talk", "author": "Soda Blonde", "image": "https://f4.bcbits.com/img/a1547517492_10.jpg", "price": 10, "type": "CD" },
+            { "id": "2", "name": "Dream Big", "author": "Soda Blonde", "image": "https://f4.bcbits.com/img/a3462523954_10.jpg", "price": 15, "type": "CD" },
+            { "id": "3", "name": "Jeff Buckley", "author": "Jeff Buckley", "image": "jeffbuckley.jpg", "price": 20, "type": "CD" },
+            { "id": "4", "name": "Primal Heart", "author": "Kimbra", "image": "primarheart.jpg", "price": 12, "type": "CD" },
+            { "id": "5", "name": "House of Leaves", "author": "Mark Z. Danielewski", "image": "houseofleaves.jpg", "price": 31.25, "type": "Book" },
+            { "id": "6", "name": "L'enfant Sauvage", "author": "Gojira", "image": "lenfantsauvage.jpg", "price": 14, "type": "CD" },
+            { "id": "7", "name": "sungazer vol. 2", "author": "sungazer", "image": "https://f4.bcbits.com/img/a2615531513_10.jpg", "price": 13, "type": "CD" },
+            { "id": "8", "name": "The Way of All Flesh", "author": "Gojira", "image": "wayofallflesh.jpg", "price": 18, "type": "CD" },
+            { "id": "9", "name": "Magma", "author": "Gojira", "image": "magma.jpg", "price": 15, "type": "CD" },
+            { "id": "10", "name": "Fortitude", "author": "Gojira", "image": "fortitude.jpg", "price": 13, "type": "CD" },
+            { "id": "11", "name": "The Long Dark Blue", "author": "Swain", "image": "https://f4.bcbits.com/img/a0730532010_10.jpg", "price": 18, "type": "CD" },
+            { "id": "12", "name": "Farenheit 451", "author": "Ray Bradbury", "image": "farenheit.jpg", "price": 12, "type": "Book" },
+            { "id": "13", "name": "30", "author": "Adele", "image": "30.jpg", "price": 19, "type": "CD" },
+            { "id": "14", "name": "Metro 2033", "author": "Dmitry Glukhovsky", "image": "metro2033.jpg", "price": 13, "type": "Book" }
         ];
         const catalogJSON = JSON.stringify(completeCatalog);
         localStorage.setItem("catalog", catalogJSON);
@@ -155,7 +155,7 @@ function loadProducts(catalog) {
                     <div><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
                     <div class="card-body">
                         <h5 class="card-title">${product.name}</h5>
-                        <p class="card-author">${product.autor}</p>
+                        <p class="card-author">${product.author}</p>
                         <div class="card-price">
                             <span class="main-price">$${parseInt(product.price)}</span>
                             <span class="cents">${(product.price % 1).toFixed(2).substr(2)}</span>
@@ -235,7 +235,7 @@ function refreshCart(){
         var deleteButton = itemDiv.querySelector('.cartDeleteButton');
 
         // Add event listener to the delete button
-        deleteButton.addEventListener('click', function() {
+        deleteButton.addEventListener('click', function(event) {
             event.stopPropagation();
             // Get the parent div of the delete button, which is the cartItem div
             var cartItemDiv = deleteButton.closest('.cartItem');
@@ -262,12 +262,12 @@ function refreshCart(){
     cartTotal.textContent = "$"+ total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     cartTag.textContent = added;
 }
-// Filtra los productos basados en tipo, autor o nombre
+// Filtra los productos basados en tipo, author o nombre
 function filterProducts(filter) {
     const lowerCaseFilter = filter.toLowerCase(); 
     const filteredItems = completeCatalog.filter(item => {
         const lowerCaseId = item.name.toLowerCase(); 
-        const lowerCaseAutor = item.autor.toLowerCase(); 
+        const lowerCaseAutor = item.author.toLowerCase(); 
         const lowerCaseTipo = item.type.toLowerCase(); 
         return (filter==="" || lowerCaseId.includes(lowerCaseFilter) || lowerCaseAutor.includes(lowerCaseFilter)) && (typeFilter === "all" || lowerCaseTipo === typeFilter.toLowerCase());
     });
