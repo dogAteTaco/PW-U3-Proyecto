@@ -6,16 +6,8 @@ let searchBar;
 
 document.addEventListener("DOMContentLoaded", function () {
     searchBar = document.getElementById("searchbar");
-    imageShown = document.getElementsByClassName("imageShown")[0];
-	imageURL = document.getElementsByClassName("imageField")[0];
 	productsArea = document.getElementById("productsArea");
 	
-	imageURL.addEventListener("input", function(event){
-		if(imageURL.value.toLowerCase().startsWith("http"))
-			imageShown.src = imageURL.value;
-		else
-			imageShown.src = "../img/products/"+imageURL.value;	
-	});
 	const catalogJSON = localStorage.getItem("catalog");
 
     if(catalogJSON)
@@ -206,21 +198,6 @@ function updateItem(id,name,author,price,image,type)
 			item.type = type;
 		}
 	});
-	refreshStorage();
-}
-
-function addItem(id,name,author,price,image,type)
-{
-	var newItem = {
-		id: id,
-		name: name,
-		author: author,
-		price: price,
-		image: image,
-		type: type
-	};
-
-	completeCatalog.push(newItem);
 	refreshStorage();
 }
 

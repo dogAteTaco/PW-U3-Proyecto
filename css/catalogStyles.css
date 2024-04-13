@@ -41,3 +41,6 @@ h2{
 	padding-top: 15px;
 }
 
+.coverSection,.imageShown{
+	width: 200px;
+}

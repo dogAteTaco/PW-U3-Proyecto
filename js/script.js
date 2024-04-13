@@ -25,8 +25,7 @@ class CartItem {
 }
 
 class Product {
-    constructor(id, name, price, image, type)
-    {
+    constructor(id, name, price, image, type) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -37,19 +36,17 @@ class Product {
 
 let cartItems = [];
 
-logged = localStorage.getItem("logged");
-    // If a user is already logged on it moves on to the landing page
-    if (!logged)
-        window.location.href = "../index.html";
+// If a user is already logged on it moves on to the landing page
+if (!localStorage.getItem("logged"))
+    window.location.href = "../index.html";
 
 document.addEventListener("DOMContentLoaded", function () {
 
     const catalogJSON = localStorage.getItem("catalog");
-    
-    if(catalogJSON)
+
+    if (catalogJSON)
         completeCatalog = JSON.parse(catalogJSON);
-    if(!completeCatalog)
-    {
+    if (!completeCatalog) {
         completeCatalog = [
             { "id": "1", "name": "Small Talk", "author": "Soda Blonde", "image": "https://f4.bcbits.com/img/a1547517492_10.jpg", "price": 10, "type": "CD" },
             { "id": "2", "name": "Dream Big", "author": "Soda Blonde", "image": "https://f4.bcbits.com/img/a3462523954_10.jpg", "price": 15, "type": "CD" },
@@ -69,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const catalogJSON = JSON.stringify(completeCatalog);
         localStorage.setItem("catalog", catalogJSON);
     }
-    
+
     loadProducts(completeCatalog);
     const searchButton = document.getElementById("searchbutton");
     const searchBar = document.getElementById("searchbar");
@@ -79,47 +76,45 @@ document.addEventListener("DOMContentLoaded", function () {
     const catButton = document.getElementById("categoriesButton");
     const logoutButton = document.getElementById("logoutButton");
     const usersData = JSON.parse(localStorage.getItem("users"));
-        if (usersData) {
-            users = usersData.map(item => new User(item.id, item.password, item.type));
-        }
+    if (usersData) {
+        users = usersData.map(item => new User(item.id, item.password, item.type));
+    }
 
     //Adds the name of the logged-in user
     const userButton = document.getElementById("userButton");
     userLogged = localStorage.getItem("user");
-    if(userLogged)
-        {
-            userButton.innerHTML = "<span style=\"font-size: small;\">Hola <strong style=\"font-weight: bold;\">"+userLogged+"</strong></span>";
-        }
+    if (userLogged) {
+        userButton.innerHTML = "<span style=\"font-size: small;\">Hola <strong style=\"font-weight: bold;\">" + userLogged + "</strong></span>";
+    }
     addUserOptions(userLogged);
     //Loads the saved cart
     const cartData = JSON.parse(localStorage.getItem("cart"));
-    
+
     console.log(cartData);
-    if(cartData)
-    {
-        cartItems = cartData.map(item => new CartItem(item.name, item.quantity, item.price,item.image));
+    if (cartData) {
+        cartItems = cartData.map(item => new CartItem(item.name, item.quantity, item.price, item.image));
         refreshCart();
     }
-        
-    allItems.addEventListener("click",function(){
+
+    allItems.addEventListener("click", function () {
         typeFilter = "all";
         filterProducts(searchBar.value);
         catButton.textContent = "Todas las categorías";
     });
 
-    logoutButton.addEventListener("click",function(){
+    logoutButton.addEventListener("click", function () {
         localStorage.removeItem("logged");
         localStorage.removeItem("user");
         window.location.href = "../index.html";
     });
 
-    cdItems.addEventListener("click",function(){
+    cdItems.addEventListener("click", function () {
         typeFilter = "cd";
         filterProducts(searchBar.value);
         catButton.textContent = "Albúms";
     });
 
-    bookItems.addEventListener("click",function(){
+    bookItems.addEventListener("click", function () {
         typeFilter = "book";
         filterProducts(searchBar.value);
         catButton.textContent = "Libros";
@@ -128,14 +123,14 @@ document.addEventListener("DOMContentLoaded", function () {
     searchButton.addEventListener("click", function () {
         filterProducts(searchBar.value);
     });
-    
+
     searchBar.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             filterProducts(searchBar.value);
         }
     });
-    
-    
+
+
 
 });
 
@@ -147,8 +142,8 @@ function loadProducts(catalog) {
         const card = document.createElement("div");
         //card.classList.add("col-md-4", "mb-4");
         let imageURL = product.image;
-        if(!product.image.toLowerCase().startsWith("http"))
-			imageURL = "../img/products/"+product.image;	
+        if (!product.image.toLowerCase().startsWith("http"))
+            imageURL = "../img/products/" + product.image;
         card.innerHTML = `
             <div class="card-container">
                 <div class="card">
@@ -171,8 +166,8 @@ function loadProducts(catalog) {
     });
     const buttons = document.querySelectorAll('.cantidadField');
 
-    
-    
+
+
     buttons.forEach(button => {
         button.addEventListener('click', function () {
             const buttonValue = this.getAttribute('data-id');
@@ -184,25 +179,24 @@ function loadProducts(catalog) {
             // Get the sibling <h5> element
             const h5Element = cardContainer.querySelector('.card-title');
             const h5Value = h5Element.textContent; // Retrieve the text content
-            let currentItem = completeCatalog.find((p) => p.name===buttonValue);
+            let currentItem = completeCatalog.find((p) => p.name === buttonValue);
             if (!cartItems.some(e => e.name === h5Value)) {
-                cartItems.push(new CartItem(buttonValue, inputValue,currentItem.price,currentItem.image));
+                cartItems.push(new CartItem(buttonValue, inputValue, currentItem.price, currentItem.image));
                 added = added + 1;
             }
-            else
-            {
+            else {
                 const product = cartItems.find(p => p.name === buttonValue);
-                product.quantity = Number.parseInt(product.quantity)+Number.parseInt(inputValue);
+                product.quantity = Number.parseInt(product.quantity) + Number.parseInt(inputValue);
             }
             refreshCart();
-            
+
         });
     });
-    
+
 }
 
 
-function refreshCart(){
+function refreshCart() {
     const cartTag = document.getElementById("cart");
     const cartTotal = document.getElementById("totalSpan");
     //Resets the total
@@ -212,16 +206,16 @@ function refreshCart(){
     items.innerHTML = "";
     let itemDiv = document.createElement("div");
     // Recalculates the total of the cart
-    cartItems.forEach((item)=>{
+    cartItems.forEach((item) => {
         const product = completeCatalog.find(producto => producto.name === item.name);
         const price = Number.parseFloat(product.price);
-        currentItem = completeCatalog.find((p) => p.name===item.name);
-        total = Number.parseFloat(total) + Number.parseFloat(item.quantity)*price;
+        currentItem = completeCatalog.find((p) => p.name === item.name);
+        total = Number.parseFloat(total) + Number.parseFloat(item.quantity) * price;
         itemDiv = document.createElement("div");
-        
+
         let imageURL = currentItem.image;
-        if(!product.image.toLowerCase().startsWith("http"))
-			imageURL = "../img/products/"+product.image;	
+        if (!product.image.toLowerCase().startsWith("http"))
+            imageURL = "../img/products/" + product.image;
 
         itemDiv.innerHTML = `
         <div class="cartItem" style="">
@@ -235,13 +229,13 @@ function refreshCart(){
         var deleteButton = itemDiv.querySelector('.cartDeleteButton');
 
         // Add event listener to the delete button
-        deleteButton.addEventListener('click', function(event) {
+        deleteButton.addEventListener('click', function (event) {
             event.stopPropagation();
             // Get the parent div of the delete button, which is the cartItem div
             var cartItemDiv = deleteButton.closest('.cartItem');
             // Get the span containing the currentItem.id
-            var nameSpan = cartItemDiv.querySelector('span:nth-child(2)'); 
-            
+            var nameSpan = cartItemDiv.querySelector('span:nth-child(2)');
+
             // Removes it based on the ID of the row
             removeById(nameSpan.textContent);
             // Remove the cartItem div
@@ -257,19 +251,19 @@ function refreshCart(){
         // Append the itemDiv to the items container
         items.appendChild(itemDiv);
     });
-    
-    localStorage.setItem("cart",JSON.stringify(cartItems));
-    cartTotal.textContent = "$"+ total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    cartTotal.textContent = "$" + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     cartTag.textContent = added;
 }
 // Filtra los productos basados en tipo, author o nombre
 function filterProducts(filter) {
-    const lowerCaseFilter = filter.toLowerCase(); 
+    const lowerCaseFilter = filter.toLowerCase();
     const filteredItems = completeCatalog.filter(item => {
-        const lowerCaseId = item.name.toLowerCase(); 
-        const lowerCaseAutor = item.author.toLowerCase(); 
-        const lowerCaseTipo = item.type.toLowerCase(); 
-        return (filter==="" || lowerCaseId.includes(lowerCaseFilter) || lowerCaseAutor.includes(lowerCaseFilter)) && (typeFilter === "all" || lowerCaseTipo === typeFilter.toLowerCase());
+        const lowerCaseId = item.name.toLowerCase();
+        const lowerCaseAutor = item.author.toLowerCase();
+        const lowerCaseTipo = item.type.toLowerCase();
+        return (filter === "" || lowerCaseId.includes(lowerCaseFilter) || lowerCaseAutor.includes(lowerCaseFilter)) && (typeFilter === "all" || lowerCaseTipo === typeFilter.toLowerCase());
     });
 
     loadProducts(filteredItems);
@@ -280,14 +274,13 @@ function isAdmin(userId) {
     return users.some(user => user.name === userId && user.type == "A");
 }
 
-function addUserOptions(userId){
+function addUserOptions(userId) {
     const userOptionsDiv = document.getElementById("userOptions");
-    if(isAdmin(userId))
-    {
-        userOptionsDiv.innerHTML = "<a class=\"dropdown-item\" href=\"catalog.html\"><span>Catálogo</span></a>"+
-        "<a class=\"dropdown-item\" href=\"user.html\"><span>Usuarios</span></a>";
+    if (isAdmin(userId)) {
+        userOptionsDiv.innerHTML = "<a class=\"dropdown-item\" href=\"catalog.html\"><span>Catálogo</span></a>" +
+            "<a class=\"dropdown-item\" href=\"user.html\"><span>Usuarios</span></a>";
     }
-    
+
 }
 
 
@@ -326,7 +319,7 @@ function addCartItem(currentItem) {
     deleteButton.className = 'cartDeleteButton';
     deleteButton.style.border = '0px';
     deleteButton.style.backgroundColor = 'transparent';
-    deleteButton.addEventListener('click', function() {
+    deleteButton.addEventListener('click', function () {
         // Remove the cartItem div when the button is clicked
         cartItemDiv.remove();
     });
@@ -350,6 +343,6 @@ function removeById(name) {
     const index = cartItems.findIndex(item => item.name === name);
     if (index !== -1) {
         cartItems.splice(index, 1);
-        localStorage.setItem("cart",JSON.stringify(cartItems));
+        localStorage.setItem("cart", JSON.stringify(cartItems));
     }
 };
