@@ -55,7 +55,10 @@
                 <div id="userOptions">
                         <!-- The User options appear hear based on user type -->
                 </div>
-
+                <div class="dropdown-divider"></div>
+                <a id="myBtn" class="dropdown-item" href="#">
+                    <span>Calculadora</span>
+                </a>
                 <div class="dropdown-divider"></div>
                 <a id="logoutButton" class="dropdown-item" href="#">
                     <span>Cerrar Sesión</span>
@@ -91,6 +94,23 @@
         </div>
     </nav>
 
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2>Calculadora</h2>
+    </div>
+    <div class="modal-body">
+      <p><iframe src="calculator.html"></iframe></p>
+    </div>
+    <div class="modal-footer">
+      <h3></h3>
+    </div>
+  </div>
+
+</div>
     <div class="container" id="catalogo-container">
         <div class="row" id="catalogo">
             <!-- Card containers will be dynamically generated here -->

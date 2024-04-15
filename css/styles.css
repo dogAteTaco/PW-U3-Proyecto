@@ -242,7 +242,9 @@ nav.navbar.justify-content-between.navbar-custom{
     margin-bottom: 50px;
 }
 
-
+iframe{
+    height: 500px;
+}
 
 
 
