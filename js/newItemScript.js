@@ -77,6 +77,13 @@ document.addEventListener("DOMContentLoaded", function () {
 			imageURL = "../img/products/"+imageField.value;
 		imageShown.src = imageURL;
 	});
+
+	const backButton = document.getElementById("backButton");
+	backButton.addEventListener('click', function(event){
+		event.stopPropagation();
+		console.log("algo");
+		window.location.href = "catalog.html";
+	});
 });
 
 
