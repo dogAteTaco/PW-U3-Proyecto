@@ -1,24 +1,30 @@
-let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+let cartItems;
+let completeCatalog;
 var typeFilter = "all";
-
-logged = localStorage.getItem("logged");
+let users = [];
+let logged = localStorage.getItem("logged");
 if (!logged)
     window.location.href = "../index.html";
 
 document.addEventListener("DOMContentLoaded", function () {
+
+    
+    cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const catalogJSON = localStorage.getItem("catalog");
+    completeCatalog = JSON.parse(catalogJSON);
     const payButton = document.getElementById("botonPagar");
     const emptyButton = document.getElementById("botonBorrar");
     localStorage.setItem("filter", "");
     localStorage.setItem("tipo", "");
-    reloadCart();
+    loadBoughtItems();
 
 
     emptyButton.addEventListener("click", function (event) {
         event.preventDefault();
         //Limpia el local storage
-
+        localStorage.removeItem("cart");
         //Ejecuta la carga de los resultados de nuevo
-        reloadCart();
+        loadBoughtItems();
     });
 
     payButton.addEventListener("click", function (event) {
@@ -28,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function reloadCart() {
+function loadBoughtItems() {
     const cartTable = document.getElementById("tablaCarrito");
     // Obtener los envíos almacenados en el almacenamiento local
     cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -41,8 +47,9 @@ function reloadCart() {
     }
     else {
         // Recorrer los envíos y agregar filas a la tabla
-        cartItems.forEach((currentItem) => {
+        cartItems.forEach((item) => {
             const row = document.createElement("tr");
+            const currentItem = completeCatalog.find(p => p.id === item.id);
 
             let imageURL = currentItem.image;
             if(!currentItem.image.toLowerCase().startsWith("http"))
@@ -51,9 +58,9 @@ function reloadCart() {
             row.innerHTML = `
             <td><img class="cartImg" src="${imageURL}"></td>
             <td>${currentItem.name}</td>
-            <td>${currentItem.quantity}</td>
+            <td>${item.quantity}</td>
             <td>$${currentItem.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-            <td>$${(currentItem.price * currentItem.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td>$${(currentItem.price * item.quantity).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
             <td><button class="cartDeleteButton"><img style="" src="../img/red-x-icon.png"></button></td>
         `;
 
@@ -88,10 +95,8 @@ function refreshTotal() {
     else {
         // Recorrer los envíos y agregar filas a la tabla
         cartItems.forEach((item) => {
-
-
-            subTotal = subTotal + Number.parseFloat(item.price) * Number.parseFloat(item.quantity);
-
+            const currentItem = completeCatalog.find(p => p.id === item.id);
+            subTotal = subTotal + Number.parseFloat(currentItem.price) * Number.parseFloat(item.quantity);
         });
         const subtotalTag = document.getElementById("subTotal");
         let prodLabel = "producto";

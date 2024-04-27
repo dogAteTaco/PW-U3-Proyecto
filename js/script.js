@@ -16,11 +16,9 @@ class User {
 }
 
 class CartItem {
-    constructor(name, quantity, price, image) {
-        this.name = name;
+    constructor(id, quantity) {
+        this.id = id;
         this.quantity = quantity;
-        this.price = price;
-        this.image = image;
     }
 }
 
@@ -114,9 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //Loads the saved cart
     const cartData = JSON.parse(localStorage.getItem("cart"));
 
-    console.log(cartData);
+    console.log('CART:',cartData);
     if (cartData) {
-        cartItems = cartData.map(item => new CartItem(item.name, item.quantity, item.price, item.image));
+        cartItems = cartData.map(item => new CartItem(item.id, item.quantity));
         refreshCart();
     }
 
@@ -169,7 +167,7 @@ function loadProducts(catalog) {
         if (!product.image.toLowerCase().startsWith("http"))
             imageURL = "../img/products/" + product.image;
         card.innerHTML = `
-            <div class="card-container">
+            <div id="${product.id}" class="card-container">
                 <div class="card">
                     <div><img src="${imageURL}" class="card-img-top" alt="${product.name}"></div>
                     <div class="card-body">
@@ -194,26 +192,26 @@ function loadProducts(catalog) {
 
     buttons.forEach(button => {
         button.addEventListener('click', function () {
-            const buttonValue = this.getAttribute('data-id');
+            // Gets the card tag where it was clicked
             const cardContainer = this.closest('.card-container');
+            // Gets the id from the card
+            var productId = cardContainer.id;
+            // Gets the input of the "Add to card" field
+            const quantityField = cardContainer.querySelector('input[data-id="cantidadProducto"]');
+            // Gets the value for the quantity
+            const quantity = quantityField.value;
 
-            const inputField = cardContainer.querySelector('input[data-id="cantidadProducto"]');
-
-            const inputValue = inputField.value;
-            // Get the sibling <h5> element
-            const h5Element = cardContainer.querySelector('.card-title');
-            const h5Value = h5Element.textContent; // Retrieve the text content
-            let currentItem = completeCatalog.find((p) => p.name === buttonValue);
-            if (!cartItems.some(e => e.name === h5Value)) {
-                cartItems.push(new CartItem(buttonValue, inputValue, currentItem.price, currentItem.image));
+            // Checks if the item is already on the cart
+            if (!cartItems.some(i => i.id == productId)) {
+                cartItems.push(new CartItem(productId, quantity));
                 added = added + 1;
             }
             else {
-                const product = cartItems.find(p => p.name === buttonValue);
-                product.quantity = Number.parseInt(product.quantity) + Number.parseInt(inputValue);
+                const cardProduct = cartItems.find(p => p.id === productId);
+                cardProduct.quantity = Number.parseInt(cardProduct.quantity) + Number.parseInt(quantity);
             }
+            // Refreshes the Cart
             refreshCart();
-
         });
     });
 
@@ -226,22 +224,22 @@ function refreshCart() {
     //Resets the total
     total = 0;
     added = cartItems.length;
+    console.log('items in cart: ',)
     const items = document.getElementById("cartItems");
     items.innerHTML = "";
-    let itemDiv = document.createElement("div");
-    // Recalculates the total of the cart
+    let cartItemDiv = document.createElement("div");
+    // Recalculates the total of the cart and redraws it
     cartItems.forEach((item) => {
-        const product = completeCatalog.find(producto => producto.name === item.name);
-        const price = Number.parseFloat(product.price);
-        currentItem = completeCatalog.find((p) => p.name === item.name);
-        total = Number.parseFloat(total) + Number.parseFloat(item.quantity) * price;
-        itemDiv = document.createElement("div");
+        var currentItem = completeCatalog.find(p => p.id === item.id);
+
+        total = Number.parseFloat(total) + Number.parseFloat(item.quantity) * currentItem.price;
+        cartItemDiv = document.createElement("div");
 
         let imageURL = currentItem.image;
-        if (!product.image.toLowerCase().startsWith("http"))
-            imageURL = "../img/products/" + product.image;
+        if (!currentItem.image.toLowerCase().startsWith("http"))
+            imageURL = "../img/products/" + currentItem.image;
 
-        itemDiv.innerHTML = `
+        cartItemDiv.innerHTML = `
         <div class="cartItem" style="">
             <div style="display: inline; margin-right:10px;"><img src="${imageURL}"></div>
             <span style="flex-grow: 1; padding-right: 15px;">${currentItem.name}</span>
@@ -250,7 +248,7 @@ function refreshCart() {
         </div>
         `;
 
-        var deleteButton = itemDiv.querySelector('.cartDeleteButton');
+        var deleteButton = cartItemDiv.querySelector('.cartDeleteButton');
 
         // Add event listener to the delete button
         deleteButton.addEventListener('click', function (event) {
@@ -272,8 +270,8 @@ function refreshCart() {
             dropdownParent.classList.add('show');
         });
 
-        // Append the itemDiv to the items container
-        items.appendChild(itemDiv);
+        // Append the Cart Item to the items container
+        items.appendChild(cartItemDiv);
     });
 
     localStorage.setItem("cart", JSON.stringify(cartItems));
@@ -302,7 +300,7 @@ function addUserOptions(userId) {
     const userOptionsDiv = document.getElementById("userOptions");
     if (isAdmin(userId)) {
         userOptionsDiv.innerHTML = "<a class=\"dropdown-item\" href=\"catalog.html\"><span>Catálogo</span></a>" +
-            "<a class=\"dropdown-item\" href=\"user.html\"><span>Usuarios</span></a>";
+            "<a class=\"dropdown-item\" href=\"user.html\"><span>Usuarios</span></a><div class=\"dropdown-divider\"></div>";
     }
 
 }

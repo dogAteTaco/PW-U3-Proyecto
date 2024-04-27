@@ -6,7 +6,7 @@ let saveButton;
 let deleteButton;
 let typeButton;
 let listedUsers;
-let logged;
+let logged = localStorage.getItem("logged");
 let isNewUser = false;
 let errorArea;
 let successArea;
@@ -20,6 +20,17 @@ class User {
         this.type = type;
     }
 }
+if (!logged)
+    window.location.href = "../index.html";
+//Loads the users if there wasn't one logged in
+const usersData = JSON.parse(localStorage.getItem("users"));
+if (usersData) {
+    users = usersData.map(item => new User(item.id, item.password, item.type));
+}
+// Returns the user to the login page if it's not an admin
+if (!isAdmin(localStorage.getItem("user"))) {
+    window.location.href = "../index.html";
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -31,105 +42,86 @@ document.addEventListener("DOMContentLoaded", function () {
     listedUsers = document.getElementById("listedUsers");
     typeAdminButton = document.getElementById("typeAdmin");
     typeClientButton = document.getElementById("typeClient");
-    logged = localStorage.getItem("logged");
+    
     errorArea = document.getElementById("errorArea");
     successArea = document.getElementById("successArea");
     // If a user is already logged on it moves on to the landing page
-    if (!logged)
-        window.location.href = "../index.html";
-    else {
-        //Loads the users if there wasn't one logged in
-        const usersData = JSON.parse(localStorage.getItem("users"));
-        if (usersData) {
-            users = usersData.map(item => new User(item.id, item.password, item.type));
+
+    // Verifies that the logged user is an admin
+    listUsers();
+    const addUserButton = document.getElementById("addUserButton");
+    addUserButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        userField.value = "";
+        userField.removeAttribute("disabled");
+        userField.focus();
+        passwordField.value = "";
+        isNewUser = true;
+
+        passwordField.removeAttribute("disabled");
+        saveButton.removeAttribute("disabled");
+        deleteButton.setAttribute("disabled", "true");
+        typeButton.removeAttribute("disabled");
+        typeButton.innerText = "Cliente";
+    });
+
+    saveButton.addEventListener("click", function (event) {
+        if (userExists(userField.value) && isNewUser) {
+            errorArea.setAttribute("style", "display:grid");
+            errorArea.innerText = "Ya existe un usuario con ese Id.";
         }
-
-        if (isAdmin(localStorage.getItem("user"))) {
-            // Verifies that the logged user is an admin
-            listUsers();
-            const addUserButton = document.getElementById("addUserButton");
-            addUserButton.addEventListener("click", function (event) {
-                event.preventDefault();
-                userField.value = "";
-                userField.removeAttribute("disabled");
-                userField.focus();
-                passwordField.value = "";
-                isNewUser = true;
-
-                passwordField.removeAttribute("disabled");
-                saveButton.removeAttribute("disabled");
-                deleteButton.setAttribute("disabled","true");
-                typeButton.removeAttribute("disabled");
-                typeButton.innerText = "Cliente";
-            });
-
-            saveButton.addEventListener("click", function(event){
-                if(userExists(userField.value) && isNewUser)
-                {
-                    errorArea.setAttribute("style","display:grid");
-                    errorArea.innerText = "Ya existe un usuario con ese Id.";
-                }
-                else if(userField.value.trim()==""||passwordField.value.length<5){
-                    errorArea.setAttribute("style","display:grid");
-                    errorArea.innerText = "Los campos de usuario y contrasena no deben estar vacios y la contrasena debe contener al menos 5 caracteres.";
-                }
-                else if(userExists(userField.value) && !isNewUser)
-                {
-                    let existingUser = users.find(u => u.id == userField.value);
-                    existingUser.password = passwordField.value;
-                    existingUser.type = typeButton.innerText.charAt(0);
-                    errorArea.setAttribute("style","display:none");
-                    successArea.innerText = "Se guardo el usuario correctamente.";
-                    successArea.setAttribute("style","display:grid");
-                    refreshUsers();
-                }
-                else
-                {
-                    addUser(userField.value, passwordField.value, typeButton.innerText.charAt(0));
-                    deleteButton.removeAttribute("disabled");
-                    errorArea.setAttribute("style","display:none");
-                    successArea.innerText = "Se guardo el usuario correctamente.";
-                    successArea.setAttribute("style","display:grid");
-                    listUsers();
-                    isNewUser = false;
-                }
-            });
-            
-            deleteButton.addEventListener("click",function(event){
-                // Deletes the user from the list and the storage
-                var index = users.map(x => {
-                    return x.Id;
-                    }).indexOf(userField.value);
-                    
-                    users.splice(index, 1);
-                    refreshUsers();
-                    listUsers();
-                    userField.value = "";
-                    passwordField.value = "";
-                    userField.setAttribute("disabled","true");
-                    passwordField.setAttribute("disabled","true");
-                    saveButton.setAttribute("disabled","true");
-                    deleteButton.setAttribute("disabled","true");
-                    typeButton.setAttribute("disabled","true");
-                    errorArea.setAttribute("style","display:none");
-                    successArea.setAttribute("style","display:grid");
-                    successArea.innerText("Se elimino el usuario correctamente.");
-            });
-            typeAdminButton.addEventListener("click", function(event){
-                event.preventDefault();
-                typeButton.innerText = typeAdminButton.innerText;
-            });
-            typeClientButton.addEventListener("click", function(event){
-                event.preventDefault();
-                typeButton.innerText = typeClientButton.innerText;
-            });
+        else if (userField.value.trim() == "" || passwordField.value.length < 5) {
+            errorArea.setAttribute("style", "display:grid");
+            errorArea.innerText = "Los campos de usuario y contrasena no deben estar vacios y la contrasena debe contener al menos 5 caracteres.";
+        }
+        else if (userExists(userField.value) && !isNewUser) {
+            let existingUser = users.find(u => u.id == userField.value);
+            existingUser.password = passwordField.value;
+            existingUser.type = typeButton.innerText.charAt(0);
+            errorArea.setAttribute("style", "display:none");
+            successArea.innerText = "Se guardo el usuario correctamente.";
+            successArea.setAttribute("style", "display:grid");
+            refreshUsers();
         }
         else {
-            // Returns the user to the login page if it's not an admin
-            window.location.href = "../index.html";
+            addUser(userField.value, passwordField.value, typeButton.innerText.charAt(0));
+            deleteButton.removeAttribute("disabled");
+            errorArea.setAttribute("style", "display:none");
+            successArea.innerText = "Se guardo el usuario correctamente.";
+            successArea.setAttribute("style", "display:grid");
+            listUsers();
+            isNewUser = false;
         }
-    }
+    });
 
+    deleteButton.addEventListener("click", function (event) {
+        // Deletes the user from the list and the storage
+        var index = users.map(x => {
+            return x.Id;
+        }).indexOf(userField.value);
+
+        users.splice(index, 1);
+        refreshUsers();
+        listUsers();
+        userField.value = "";
+        passwordField.value = "";
+        userField.setAttribute("disabled", "true");
+        passwordField.setAttribute("disabled", "true");
+        saveButton.setAttribute("disabled", "true");
+        deleteButton.setAttribute("disabled", "true");
+        typeButton.setAttribute("disabled", "true");
+        errorArea.setAttribute("style", "display:none");
+        successArea.setAttribute("style", "display:grid");
+        successArea.innerText("Se elimino el usuario correctamente.");
+    });
+    typeAdminButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        typeButton.innerText = typeAdminButton.innerText;
+    });
+    typeClientButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        typeButton.innerText = typeClientButton.innerText;
+    });
 });
 
 // Function to add new users
@@ -138,7 +130,7 @@ function addUser(userId, userPass, userType) {
         console.log(`User with ID ${userId} exists.`);
     } else {
         users.push(new User(userId, userPass, userType));
-        
+
         refreshUsers();
     }
 }
@@ -149,7 +141,7 @@ function refreshUsers() {
 }
 
 function listUsers() {
-    
+
     // Empties the users list
     listedUsers.innerHTML = "";
 
@@ -162,7 +154,7 @@ function listUsers() {
         userElement.addEventListener("click", function (event) {
             event.preventDefault();
             // Enables the fields and buttons
-            userField.setAttribute("disabled","true")
+            userField.setAttribute("disabled", "true")
             passwordField.removeAttribute("disabled");
             saveButton.removeAttribute("disabled");
             deleteButton.removeAttribute("disabled");
@@ -172,18 +164,17 @@ function listUsers() {
             if (user.type == "A") {
                 typeButton.innerText = "Administrador";
             }
-            else{
+            else {
                 typeButton.innerText = "Cliente";
             }
             // Removes the ability to delete or change type of user of admin user
-            if(user.id == "admin")
-            {
-                typeButton.setAttribute("disabled","true");
-                deleteButton.setAttribute("disabled","true");
+            if (user.id == "admin") {
+                typeButton.setAttribute("disabled", "true");
+                deleteButton.setAttribute("disabled", "true");
             }
             isNewUser = false;
-            errorArea.setAttribute("style","display:none");
-            successArea.setAttribute("style","display:none");
+            errorArea.setAttribute("style", "display:none");
+            successArea.setAttribute("style", "display:none");
         });
         // Adds the button for the user on the list
         listedUsers.appendChild(userElement);
