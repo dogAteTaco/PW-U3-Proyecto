@@ -72,9 +72,11 @@ document.addEventListener("DOMContentLoaded", function () {
         completeCatalog = [
             { "id": "1", "name": "Small Talk", "author": "Soda Blonde", "image": "https://f4.bcbits.com/img/a1547517492_10.jpg", "price": 10, "type": "CD" },
             { "id": "2", "name": "Dream Big", "author": "Soda Blonde", "image": "https://f4.bcbits.com/img/a3462523954_10.jpg", "price": 15, "type": "CD" },
+            { "id": "16", "name": "And Every Morning the Way Home Gets Longer and Longer", "author": "Fredrik Backman", "image": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1472074835i/31373633.jpg", "price": 11.99, "type": "Book" },
             { "id": "3", "name": "Jeff Buckley", "author": "Jeff Buckley", "image": "jeffbuckley.jpg", "price": 20, "type": "CD" },
             { "id": "4", "name": "Primal Heart", "author": "Kimbra", "image": "primarheart.jpg", "price": 12, "type": "CD" },
             { "id": "5", "name": "House of Leaves", "author": "Mark Z. Danielewski", "image": "houseofleaves.jpg", "price": 31.25, "type": "Book" },
+            { "id": "17", "name": "I'm Glad My Mom Died", "author": "Jennette McCurdy", "image": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1649286799i/59364173.jpg", "price": 14.99, "type": "Book" },
             { "id": "6", "name": "L'enfant Sauvage", "author": "Gojira", "image": "lenfantsauvage.jpg", "price": 14, "type": "CD" },
             { "id": "7", "name": "sungazer vol. 2", "author": "sungazer", "image": "https://f4.bcbits.com/img/a2615531513_10.jpg", "price": 13, "type": "CD" },
             { "id": "8", "name": "The Way of All Flesh", "author": "Gojira", "image": "wayofallflesh.jpg", "price": 18, "type": "CD" },
@@ -83,7 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
             { "id": "11", "name": "The Long Dark Blue", "author": "Swain", "image": "https://f4.bcbits.com/img/a0730532010_10.jpg", "price": 18, "type": "CD" },
             { "id": "12", "name": "Farenheit 451", "author": "Ray Bradbury", "image": "farenheit.jpg", "price": 12, "type": "Book" },
             { "id": "13", "name": "30", "author": "Adele", "image": "30.jpg", "price": 19, "type": "CD" },
-            { "id": "14", "name": "Metro 2033", "author": "Dmitry Glukhovsky", "image": "metro2033.jpg", "price": 13, "type": "Book" }
+            { "id": "14", "name": "Metro 2033", "author": "Dmitry Glukhovsky", "image": "metro2033.jpg", "price": 13, "type": "Book" },
+            { "id": "15", "name": "The Stranger", "author": "Albert Camus", "image": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1590930002i/49552.jpg", "price": 12.99, "type": "Book" }
         ];
         const catalogJSON = JSON.stringify(completeCatalog);
         localStorage.setItem("catalog", catalogJSON);
